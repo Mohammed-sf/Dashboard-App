@@ -47,54 +47,6 @@ const validUsers = [
 // Current user
 let currentUser = null;
 
-// Language translations
-const translations = {
-    en: {
-        login: 'Admin Login',
-        dashboard: 'Dashboard',
-        clients: 'Client List',
-        tasks: 'Tasks',
-        uploads: 'File Uploads',
-        profile: 'Profile',
-        logout: 'Logout',
-        search: 'Search...',
-        noClients: 'No clients available',
-        noTasks: 'No tasks available',
-        noFiles: 'No files uploaded',
-        dragDrop: 'Drag & Drop files here or click to browse',
-        totalClients: 'Total Clients',
-        activeTasks: 'Active Tasks',
-        completedTasks: 'Completed Tasks',
-        totalFiles: 'Total Files',
-        recentActivity: 'Recent Activity',
-        noActivities: 'No recent activities',
-        saveChanges: 'Save Changes'
-    },
-    fr: {
-        login: 'Connexion Admin',
-        dashboard: 'Tableau de Bord',
-        clients: 'Liste des Clients',
-        tasks: 'Tâches',
-        uploads: 'Téléchargements',
-        profile: 'Profil',
-        logout: 'Déconnexion',
-        search: 'Rechercher...',
-        noClients: 'Aucun client disponible',
-        noTasks: 'Aucune tâche disponible',
-        noFiles: 'Aucun fichier téléchargé',
-        dragDrop: 'Glissez-déposez des fichiers ici ou cliquez pour parcourir',
-        totalClients: 'Total des Clients',
-        activeTasks: 'Tâches Actives',
-        completedTasks: 'Tâches Terminées',
-        totalFiles: 'Total des Fichiers',
-        recentActivity: 'Activité Récente',
-        noActivities: 'Aucune activité récente',
-        saveChanges: 'Enregistrer les Modifications'
-    }
-};
-
-// Current language
-let currentLanguage = 'en';
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
@@ -144,11 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.main-content').classList.toggle('expanded');
     });
     
-    // Language switcher
-    languageSelector.addEventListener('change', () => {
-        currentLanguage = languageSelector.value;
-        updateLanguage();
-    });
+    // Language switching is now handled by js/language.js
     
     // Profile form submission
     document.getElementById('save-profile-btn').addEventListener('click', handleProfileUpdate);
@@ -227,7 +175,7 @@ function updateRecentActivity() {
     
     // Check if there are any activities
     if (activities.length === 0) {
-        activityContainer.innerHTML = `<div class="empty-list">${getTranslationSafe('noActivities')}</div>`;
+        activityContainer.innerHTML = `<div class="empty-list">${window.getTranslation('noActivities', 'No recent activities')}</div>`;
         return;
     }
     

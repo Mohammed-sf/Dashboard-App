@@ -1,7 +1,6 @@
 // Language Support Functionality
 
-// Get DOM Elements (use the one already defined in main.js)
-// const languageSelector = document.getElementById('language-selector');
+// Language selector will be fetched when needed to ensure DOM is ready.
 
 // Use the existing translations or create a new one
 window.translations = window.translations || {
@@ -295,19 +294,30 @@ window.translations = window.translations || {
 
 // Initialize language support
 document.addEventListener('DOMContentLoaded', () => {
-    // Set initial language based on selector
-    const currentLanguage = languageSelector ? languageSelector.value : 'en';
+    const langSelector = document.getElementById('language-selector'); // Define here for local scope
+
+    // Determine initial language: 1. localStorage, 2. selector value, 3. fallback to 'en'
+    let initialLanguage = localStorage.getItem('preferredLanguage');
+    if (!initialLanguage || !(window.translations && window.translations[initialLanguage])) {
+        initialLanguage = langSelector ? langSelector.value : 'en';
+    }
+    if (!(window.translations && window.translations[initialLanguage])) { // Final fallback if selector value is invalid
+        initialLanguage = 'en';
+    }
+
+    // Set the language selector's value to the determined initial language
+    if (langSelector) {
+        langSelector.value = initialLanguage;
+    }
     
     // Apply translations
-    applyTranslations(currentLanguage);
+    applyTranslations(initialLanguage);
     
     // Add language change event listener
-    if (languageSelector) {
-        languageSelector.addEventListener('change', () => {
-            const selectedLanguage = languageSelector.value;
+    if (langSelector) {
+        langSelector.addEventListener('change', () => {
+            const selectedLanguage = langSelector.value;
             applyTranslations(selectedLanguage);
-            
-            // Store language preference
             localStorage.setItem('preferredLanguage', selectedLanguage);
         });
     }
@@ -467,21 +477,31 @@ function translateOption(selector, text) {
 
 // Function to get the current language
 function getCurrentLanguage() {
-    // Check localStorage first
+    const langSelector = document.getElementById('language-selector'); // Fetch when needed
     const savedLanguage = localStorage.getItem('preferredLanguage');
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'fr')) {
+    // Check if saved language is valid and exists in our translations
+    if (savedLanguage && window.translations && window.translations[savedLanguage]) {
         return savedLanguage;
     }
-    
-    // Fall back to language selector
-    return languageSelector ? languageSelector.value : 'en';
+    // Fall back to language selector's current value if valid, otherwise 'en'
+    if (langSelector && window.translations && window.translations[langSelector.value]) {
+        return langSelector.value;
+    }
+    return 'en'; // Default fallback
 }
 
 // Expose translation functions globally
-window.translations = translations;
+// window.translations is already assigned at the top of the file.
 window.getCurrentLanguage = getCurrentLanguage;
-window.getTranslation = function(key) {
+window.getTranslation = function(key, fallbackValue = null) {
     const lang = getCurrentLanguage();
-    const trans = translations[lang] || translations.en;
-    return trans[key] || key;
+    const langTranslations = (window.translations && window.translations[lang]) ? window.translations[lang] : (window.translations ? window.translations.en : {});
+    
+    if (langTranslations && langTranslations[key] !== undefined) {
+        return langTranslations[key];
+    }
+    if (fallbackValue !== null) {
+        return fallbackValue;
+    }
+    return key; // Fallback to the key itself if no translation and no fallbackValue provided
 };

@@ -298,7 +298,7 @@ function openClientModal(clientId = null) {
             document.getElementById('client-name').value = client.name;
             document.getElementById('client-email').value = client.email;
             document.getElementById('client-phone').value = client.phone;
-            document.getElementById('client-status').value = client.status || 'active';
+            // client-status element was removed, no longer setting this value in the form
             document.getElementById('client-dgi-login').value = client.dgiLogin || '';
             document.getElementById('client-dgi-password').value = client.dgiPassword || '';
             document.getElementById('client-nif').value = client.nif || '';
