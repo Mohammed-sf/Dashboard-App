@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Client & Task Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link rel="stylesheet" href="css/task-grid.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Login Page -->
+        <div id="login-page" class="active">
+            <div class="login-container">
+                <div class="login-logo">
+                    <h1>TaskFlow</h1>
+                </div>
+                <div class="login-form">
+                    <h2 id="login-title">Admin Login</h2>
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Enter your username">
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password">
+                    </div>
+                    <button id="login-btn" class="btn-primary">Login</button>
+                    <p id="login-error" class="error-message"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <div id="main-app" class="hidden">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2>TaskFlow</h2>
+                </div>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item active" data-page="home">
+                        <i class="fas fa-home"></i> <span>Home</span>
+                    </li>
+                    <li class="sidebar-item" data-page="clients">
+                        <i class="fas fa-users"></i> <span>Client List</span>
+                    </li>
+                    <li class="sidebar-item" data-page="tasks">
+                        <i class="fas fa-tasks"></i> <span>Tasks</span>
+                    </li>
+                    <li class="sidebar-item" data-page="uploads">
+                        <i class="fas fa-file-upload"></i> <span>File Uploads</span>
+                    </li>
+                    <li class="sidebar-item" data-page="profile">
+                        <i class="fas fa-user"></i> <span>Profile</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Top Navbar -->
+                <nav class="navbar">
+                    <div class="navbar-left">
+                        <button id="toggle-sidebar" class="btn-icon">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="search-container">
+                            <input type="text" placeholder="Search..." class="search-input">
+                            <button class="search-btn"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="navbar-right">
+                        <div class="language-switcher">
+                            <select id="language-selector">
+                                <option value="en">English</option>
+                                <option value="fr">Français</option>
+                            </select>
+                        </div>
+                        <div id="dark-mode-toggle" data-tooltip="Switch to dark mode">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="profile-dropdown">
+                            <button class="profile-btn">
+                                <i class="fas fa-user-circle"></i>
+                                <span id="user-name">Admin</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" data-page="profile" class="dropdown-item">Profile</a>
+                                <a href="#" id="logout-btn" class="dropdown-item">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Page Content -->
+                <div class="page-content">
+                    <!-- Home Page -->
+                    <div id="home-page" class="content-page active">
+                        <div class="welcome-section">
+                            <h1>Dashboard</h1>
+                            <p class="welcome-message">Welcome to TaskFlow, <span id="welcome-name">Admin</span>!</p>
+                            <p class="welcome-subtitle">Your client and task management solution</p>
+                        </div>
+                        <div class="dashboard-grid">
+                            <div class="dashboard-card">
+                                <div class="card-icon"><i class="fas fa-users"></i></div>
+                                <div class="card-info">
+                                    <h3>Total Clients</h3>
+                                    <p class="card-value">0</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card">
+                                <div class="card-icon"><i class="fas fa-tasks"></i></div>
+                                <div class="card-info">
+                                    <h3>Active Tasks</h3>
+                                    <p class="card-value">0</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card">
+                                <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                                <div class="card-info">
+                                    <h3>Completed Tasks</h3>
+                                    <p class="card-value">0</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card">
+                                <div class="card-icon"><i class="fas fa-file"></i></div>
+                                <div class="card-info">
+                                    <h3>Total Files</h3>
+                                    <p class="card-value">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recent-activity">
+                            <h2>Recent Activity</h2>
+                            <div class="activity-list">
+                                <p>No recent activities</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clients Page -->
+                    <div id="clients-page" class="content-page">
+                        <h1>Client List</h1>
+                        <div class="toolbar">
+                            <button id="add-client-btn" class="btn-primary"><i class="fas fa-plus"></i> Add New Client</button>
+                            <button id="export-excel-btn" class="btn-secondary"><i class="fas fa-file-export"></i> Export to Excel</button>
+                            <div class="search-filter-container">
+                                <div class="search-box">
+                                    <input type="text" id="client-search" placeholder="Search clients...">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="filter-options">
+                                    <select id="client-filter">
+                                        <option value="all">All Clients</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tabs for client data -->
+                        <div class="client-tabs">
+                            <button class="tab-btn active" data-tab="main-info">Main Info</button>
+                            <button class="tab-btn" data-tab="cnss-info">CNSS Info</button>
+                        </div>
+                        
+                        <!-- Main client information table -->
+                        <div class="tab-content active" id="main-info-tab">
+                            <div class="table-container">
+                                <table class="data-table" id="clients-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>DGI Login</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>N.I.F</th>
+                                            <th>ICE</th>
+                                            <th>PATENT</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="clients-table-body">
+                                        <tr>
+                                            <td colspan="8" class="empty-table">No clients available</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- CNSS information table -->
+                        <div class="tab-content" id="cnss-info-tab">
+                            <div class="table-container">
+                                <table class="data-table" id="cnss-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>CNSS Login</th>
+                                            <th>CNSS Password</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cnss-table-body">
+                                        <tr>
+                                            <td colspan="4" class="empty-table">No CNSS information available</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Client Modal Form -->
+                    <div id="client-modal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 id="client-modal-title">Add New Client</h2>
+                                <span class="close-modal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <form id="client-form">
+                                    <input type="hidden" id="client-id" value="">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="client-name">Name*</label>
+                                            <input type="text" id="client-name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="client-email">Email*</label>
+                                            <input type="email" id="client-email" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="client-phone">Phone*</label>
+                                            <input type="text" id="client-phone" required>
+                                        </div>
+                                        <!-- Status field removed as requested -->
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="client-dgi-login">DGI Login*</label>
+                                            <input type="text" id="client-dgi-login" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="client-dgi-password">DGI Password*</label>
+                                            <input type="password" id="client-dgi-password" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="client-nif">N.I.F</label>
+                                            <input type="text" id="client-nif">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="client-ice">ICE</label>
+                                            <input type="text" id="client-ice">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="client-patent">PATENT</label>
+                                            <input type="text" id="client-patent">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- CNSS Information (Collapsible) -->
+                                    <div class="collapsible-section">
+                                        <div class="collapsible-header">
+                                            <h3>CNSS Information (Optional)</h3>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="collapsible-content">
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="client-cnss-login">CNSS Login</label>
+                                                    <input type="text" id="client-cnss-login">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="client-cnss-password">CNSS Password</label>
+                                                    <input type="password" id="client-cnss-password">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Assigned Tasks (Collapsible) -->
+                                    <div class="collapsible-section">
+                                        <div class="collapsible-header">
+                                            <h3>Assign Tasks</h3>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="collapsible-content">
+                                            <div class="task-types-container">
+                                                <p class="form-hint">Select the types of tasks to assign to this client:</p>
+                                                <div class="task-types-grid">
+                                                    <div class="checkbox-group">
+                                                        <input type="checkbox" id="task-tva-mensuel" class="task-type-checkbox" value="TVA Mensuel">
+                                                        <label for="task-tva-mensuel">TVA Mensuel</label>
+                                                    </div>
+                                                    <div class="checkbox-group">
+                                                        <input type="checkbox" id="task-tva-trimestrielle" class="task-type-checkbox" value="TVA Trimestrielle">
+                                                        <label for="task-tva-trimestrielle">TVA Trimestrielle</label>
+                                                    </div>
+                                                    <div class="checkbox-group">
+                                                        <input type="checkbox" id="task-cnss" class="task-type-checkbox" value="CNSS">
+                                                        <label for="task-cnss">CNSS</label>
+                                                    </div>
+                                                    <div class="checkbox-group">
+                                                        <input type="checkbox" id="task-is" class="task-type-checkbox" value="IS">
+                                                        <label for="task-is">IS</label>
+                                                    </div>
+                                                    <div class="checkbox-group">
+                                                        <input type="checkbox" id="task-ir" class="task-type-checkbox" value="IR">
+                                                        <label for="task-ir">IR</label>
+                                                    </div>
+                                                    <div class="checkbox-group">
+                                                        <input type="checkbox" id="task-patent" class="task-type-checkbox" value="Patent">
+                                                        <label for="task-patent">Patent</label>
+                                                    </div>
+                                                    <div class="checkbox-group">
+                                                        <input type="checkbox" id="task-etat-9000" class="task-type-checkbox" value="Etat 9000">
+                                                        <label for="task-etat-9000">Etat 9000</label>
+                                                    </div>
+                                                    <div class="checkbox-group">
+                                                        <input type="checkbox" id="task-acompte" class="task-type-checkbox" value="Acompte">
+                                                        <label for="task-acompte">Acompte</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="button" id="cancel-client-btn" class="btn-secondary">Cancel</button>
+                                        <button type="submit" id="save-client-btn" class="btn-primary">Save Client</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Task Assignment Modal -->
+                    <div id="task-assignment-modal" class="modal">
+                        <div class="modal-content modal-sm">
+                            <div class="modal-header">
+                                <h2>Assign Task</h2>
+                                <span class="close-modal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <form id="task-assignment-form">
+                                    <div class="form-group">
+                                        <label for="task-type">Task Type*</label>
+                                        <select id="task-type" required>
+                                            <option value="">Select Task Type</option>
+                                            <option value="TVA Mensuel">TVA Mensuel</option>
+                                            <option value="TVA Trimestriel">TVA Trimestriel</option>
+                                            <option value="IR Mensuel">IR Mensuel</option>
+                                            <option value="IR Trimestriel">IR Trimestriel</option>
+                                            <option value="Bilan Annuel">Bilan Annuel</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="task-due-date">Due Date*</label>
+                                        <input type="date" id="task-due-date" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="task-description">Description</label>
+                                        <textarea id="task-description" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="button" id="cancel-task-btn" class="btn-secondary">Cancel</button>
+                                        <button type="submit" id="save-task-btn" class="btn-primary">Assign Task</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delete Confirmation Modal -->
+                    <div id="delete-confirmation-modal" class="modal">
+                        <div class="modal-content modal-sm">
+                            <div class="modal-header">
+                                <h2>Confirm Delete</h2>
+                                <span class="close-modal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this client? This action cannot be undone.</p>
+                                <div class="form-actions">
+                                    <button type="button" id="cancel-delete-btn" class="btn-secondary">Cancel</button>
+                                    <button type="button" id="confirm-delete-btn" class="btn-danger">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tasks Page -->
+                    <div id="tasks-page" class="content-page">
+                        <h1>Tasks</h1>
+                        
+                        <!-- Current Period Info -->
+                        <div class="current-period-bar">
+                            <div class="current-period-info">
+                                <span class="current-label">Current Period:</span>
+                                <span id="current-month-year" class="current-value">May 2025</span>
+                            </div>
+                            <div class="task-period-info">
+                                <span class="current-label">Showing Tasks For:</span>
+                                <span id="task-period-display" class="current-value">April 2025</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Task Types Navigation -->
+                        <div class="task-types-nav">
+                            <button class="task-type-btn active" data-type="TVA Mensuel">TVA Mensuel</button>
+                            <button class="task-type-btn" data-type="TVA Trimestrielle">TVA Trimestrielle</button>
+                            <button class="task-type-btn" data-type="CNSS">CNSS</button>
+                            <button class="task-type-btn" data-type="IS">IS</button>
+                            <button class="task-type-btn" data-type="IR">IR</button>
+                            <button class="task-type-btn" data-type="Acompte">Acompte</button>
+                            <button class="task-type-btn" data-type="Patent">Patent</button>
+                            <button class="task-type-btn" data-type="Etat 9000">Etat 9000</button>
+                        </div>
+                        
+                        <!-- Task Search and Filter -->
+                        <div class="search-filter-container">
+                            <div class="search-box">
+                                <input type="text" id="task-search" placeholder="Search tasks...">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="filter-options">
+                                <select id="task-status-filter">
+                                    <option value="all">All Statuses</option>
+                                    <option value="Not Started">Not Started</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Done">Done</option>
+                                </select>
+                                <select id="task-due-date-filter">
+                                    <option value="all">All Due Dates</option>
+                                    <option value="upcoming">Upcoming</option>
+                                    <option value="overdue">Overdue</option>
+                                    <option value="thisWeek">This Week</option>
+                                    <option value="thisMonth">This Month</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Tasks Content -->
+                        <div id="tasks-content" class="tasks-content">
+                            <!-- Task List Container -->
+                            <div class="task-list-container">
+                                <div class="task-list-header">
+                                    <h2 id="task-list-title">TVA Mensuel - 2025</h2>
+                                </div>
+                                <div class="table-container">
+                                    <table class="data-table" id="tasks-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Client</th>
+                                                <th>Deadline</th>
+                                                <th>Status</th>
+                                                <th>Notes</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tasks-table-body">
+                                            <!-- Tasks will be loaded dynamically here -->
+                                            <tr>
+                                                <td colspan="5" class="empty-table">No tasks available for this period</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="task-actions">
+                                        <button id="add-client-task-btn" class="btn-primary"><i class="fas fa-plus"></i> Add Client Task</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Task Status Modal -->
+                    <div id="task-status-modal" class="modal">
+                        <div class="modal-content modal-sm">
+                            <div class="modal-header">
+                                <h2>Update Task Status</h2>
+                                <span class="close-modal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <form id="task-status-form">
+                                    <input type="hidden" id="update-task-id" value="">
+                                    <input type="hidden" id="update-task-type" value="">
+                                    <input type="hidden" id="update-client-id" value="">
+                                    
+                                    <div class="form-group">
+                                        <label for="task-status">Status</label>
+                                        <select id="task-status" required>
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="In Progress">In Progress</option>
+                                            <option value="Done">Done</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="task-notes">Notes</label>
+                                        <textarea id="task-notes" rows="4" placeholder="Add notes about this task..."></textarea>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="button" id="cancel-status-update" class="btn-secondary">Cancel</button>
+                                        <button type="submit" id="save-status-update" class="btn-primary">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Client Task Assignment Modal -->
+                    <div id="client-task-modal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Assign Task to Clients</h2>
+                                <span class="close-modal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <div class="client-selection-info">
+                                    <p>Select clients to assign the <span id="task-type-display">TVA Mensuel</span> task for <span id="task-period-label">April 2025</span>.</p>
+                                </div>
+                                <div class="client-selection-container">
+                                    <div class="table-container">
+                                        <table class="data-table" id="client-selection-table">
+                                            <thead>
+                                                <tr>
+                                                    <th><input type="checkbox" id="select-all-clients"></th>
+                                                    <th>Client Name</th>
+                                                    <th>Email</th>
+                                                    <th>Current Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="client-selection-body">
+                                                <!-- Clients will be loaded dynamically here -->
+                                                <tr>
+                                                    <td colspan="4" class="empty-table">No clients available</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" id="cancel-client-task" class="btn-secondary">Cancel</button>
+                                    <button type="button" id="assign-client-task" class="btn-primary">Assign Task</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Uploads Page -->
+                    <div id="uploads-page" class="content-page">
+                        <h1>File Uploads</h1>
+                        <div class="toolbar">
+                            <button id="upload-file-btn" class="btn-primary"><i class="fas fa-upload"></i> Upload File</button>
+                            <div class="search-filter-container">
+                                <div class="search-box">
+                                    <input type="text" id="file-search" placeholder="Search files...">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="filter-options">
+                                    <select id="file-filter">
+                                        <option value="all">All Files</option>
+                                        <option value="documents">Documents</option>
+                                        <option value="images">Images</option>
+                                        <option value="spreadsheets">Spreadsheets</option>
+                                        <option value="others">Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- File Upload Area -->
+                        <div class="upload-section">
+                            <div id="upload-area" class="dropzone">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & Drop files here or click to browse</p>
+                                <input type="file" id="file-input" class="file-input" multiple style="display: none;">
+                                <div class="dropzone-info">Maximum file size: 20MB</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Files List Table -->
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>File Name</th>
+                                        <th>Type</th>
+                                        <th>Size</th>
+                                        <th>Upload Date</th>
+                                        <th>Client</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="files-table-body">
+                                    <tr>
+                                        <td colspan="6" class="empty-table">No files uploaded</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- File Upload Modal -->
+                    <div id="file-upload-modal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Upload File</h2>
+                                <span class="close-modal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <form id="file-upload-form">
+                                    <div class="form-group">
+                                        <label for="file-client">Select Client*</label>
+                                        <select id="file-client" required>
+                                            <option value="">-- Select Client --</option>
+                                            <!-- Clients will be populated dynamically -->
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="file-category">File Category</label>
+                                        <select id="file-category">
+                                            <option value="document">Document</option>
+                                            <option value="image">Image</option>
+                                            <option value="spreadsheet">Spreadsheet</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="file-description">Description</label>
+                                        <textarea id="file-description" rows="3" placeholder="Enter file description..."></textarea>
+                                    </div>
+                                    
+                                    <div class="file-upload-area">
+                                        <div id="modal-upload-area" class="dropzone">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <p>Drag & Drop files here or click to browse</p>
+                                            <input type="file" id="modal-file-input" class="file-input" multiple style="display: none;">
+                                            <div class="dropzone-info">Maximum file size: 20MB</div>
+                                        </div>
+                                        <div id="selected-files-list">
+                                            <!-- Selected files will be displayed here -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="button" id="cancel-upload" class="btn-secondary">Cancel</button>
+                                        <button type="submit" id="confirm-upload" class="btn-primary">Upload Files</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- File Preview Modal -->
+                    <div id="file-preview-modal" class="modal">
+                        <div class="modal-content modal-lg">
+                            <div class="modal-header">
+                                <h2 id="preview-file-name">File Preview</h2>
+                                <span class="close-modal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <div class="file-preview-container">
+                                    <div id="file-preview-content">
+                                        <!-- File preview will be displayed here -->
+                                    </div>
+                                </div>
+                                <div class="file-details">
+                                    <h3>File Details</h3>
+                                    <div class="details-grid">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Client:</span>
+                                            <span id="preview-client" class="detail-value">-</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Type:</span>
+                                            <span id="preview-type" class="detail-value">-</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Size:</span>
+                                            <span id="preview-size" class="detail-value">-</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Uploaded:</span>
+                                            <span id="preview-date" class="detail-value">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-description">
+                                        <span class="detail-label">Description:</span>
+                                        <p id="preview-description" class="detail-value">-</p>
+                                    </div>
+                                </div>
+                                <div class="preview-actions">
+                                    <a id="download-file-link" href="#" class="btn-primary" download><i class="fas fa-download"></i> Download</a>
+                                    <button id="delete-file-btn" class="btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Page -->
+                    <div id="profile-page" class="content-page">
+                        <h1>Profile</h1>
+                        <div class="profile-container">
+                            <div class="profile-header">
+                                <div class="profile-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="profile-info">
+                                    <h2 id="profile-name">Admin User</h2>
+                                    <p id="profile-email">admin@taskflow.com</p>
+                                </div>
+                            </div>
+                            <div class="profile-form">
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" id="profile-username" placeholder="Enter username">
+                                </div>
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" id="profile-fullname" placeholder="Enter full name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="profile-email-input" placeholder="Enter email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Current Password</label>
+                                    <input type="password" id="profile-current-password" placeholder="Enter current password">
+                                </div>
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <input type="password" id="profile-new-password" placeholder="Enter new password">
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" id="profile-confirm-password" placeholder="Confirm new password">
+                                </div>
+                                <p id="profile-error" class="error-message"></p>
+                                <button id="save-profile-btn" class="btn-primary">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/clients.js"></script>
+    <script src="js/tasks.js"></script>
+    <script src="js/file-uploads.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/utils.js"></script>
+</body>
+</html>

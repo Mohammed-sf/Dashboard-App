@@ -1,0 +1,93 @@
+/* Task Types Grid */
+.task-types-container {
+    margin: 15px 0;
+}
+
+.form-hint {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.task-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 8px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    cursor: pointer;
+    font-weight: normal;
+}
+
+/* Task Status Colors */
+.status-not-started {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.status-in-progress {
+    color: var(--warning-color);
+    font-weight: bold;
+}
+
+.status-done {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+/* Due Date Colors */
+.due-date-overdue {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+.due-date-today {
+    color: var(--warning-color);
+    font-weight: bold;
+}
+
+.due-date-upcoming {
+    color: var(--info-color);
+}
+
+/* Task Period Navigation */
+.period-navigation {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.period-navigation .btn-icon {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.period-navigation .btn-icon:hover {
+    color: var(--primary-hover);
+}
+
+.period-display {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0 15px;
+}

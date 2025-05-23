@@ -1,0 +1,327 @@
+/* Dark Mode Styles */
+
+:root {
+    /* Light Mode Variables */
+    --primary-color: #4e73df;
+    --primary-hover: #2e59d9;
+    --secondary-color: #858796;
+    --success-color: #1cc88a;
+    --info-color: #36b9cc;
+    --warning-color: #f6c23e;
+    --danger-color: #e74a3b;
+    --light-color: #f8f9fc;
+    --dark-color: #5a5c69;
+    
+    --bg-color: #f8f9fc;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --border-color: #e3e6f0;
+    --input-bg: #ffffff;
+    --modal-bg: #ffffff;
+    --dropdown-bg: #ffffff;
+    --sidebar-bg: #4e73df;
+    --sidebar-text: #ffffff;
+    --topbar-bg: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.15);
+    --table-row-hover: #f3f3f3;
+    --nav-hover: #eaecf4;
+    --divider-color: #e3e6f0;
+}
+
+/* Dark Mode Theme Variables */
+.dark-mode {
+    --primary-color: #6366f1; /* Indigo-based primary color */
+    --primary-hover: #4f46e5;
+    --secondary-color: #9ca3af;
+    --success-color: #22c55e; /* Brighter success */
+    --info-color: #0ea5e9; /* Brighter info */
+    --warning-color: #f59e0b; /* Warmer warning */
+    --danger-color: #ef4444; /* Brighter danger */
+    --light-color: #374151;
+    --dark-color: #f3f4f6;
+    
+    --bg-color: #111827; /* Dark slate gray bg */
+    --card-bg: #1f2937; /* Slightly lighter card bg */
+    --text-color: #f9fafb; /* Brighter text for better contrast */
+    --border-color: #374151; /* More visible borders */
+    --input-bg: #374151;
+    --modal-bg: #1f2937;
+    --dropdown-bg: #1f2937;
+    --sidebar-bg: #0f172a; /* Dark blue sidebar */
+    --sidebar-text: #f3f4f6;
+    --topbar-bg: #1f2937;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --table-row-hover: #2d3748;
+    --nav-hover: #2d3748;
+    --divider-color: #4b5563;
+}
+
+/* Apply Dark Mode Styles */
+.dark-mode body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.dark-mode .topbar {
+    background-color: var(--topbar-bg);
+    border-color: var(--border-color);
+}
+
+.dark-mode .sidebar {
+    background-color: var(--sidebar-bg);
+}
+
+.dark-mode .sidebar-item {
+    color: var(--sidebar-text);
+}
+
+.dark-mode .sidebar-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .page-content {
+    background-color: var(--bg-color);
+}
+
+.dark-mode .card {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.dark-mode .card-header {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-color: var(--border-color);
+}
+
+.dark-mode .dropdown-menu {
+    background-color: var(--dropdown-bg);
+    border-color: var(--border-color);
+}
+
+.dark-mode .dropdown-item {
+    color: var(--text-color);
+}
+
+.dark-mode .dropdown-item:hover {
+    background-color: var(--nav-hover);
+}
+
+.dark-mode .dropdown-divider {
+    border-color: var(--divider-color);
+}
+
+.dark-mode input, 
+.dark-mode select, 
+.dark-mode textarea {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.dark-mode .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.dark-mode .btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.dark-mode .btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.dark-mode .btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.dark-mode .btn-light {
+    background-color: var(--light-color);
+    border-color: var(--light-color);
+    color: var(--text-color);
+}
+
+.dark-mode .modal-content {
+    background-color: var(--modal-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.dark-mode .modal-header, 
+.dark-mode .modal-footer {
+    border-color: var(--border-color);
+}
+
+.dark-mode .close-modal {
+    color: var(--text-color);
+}
+
+.dark-mode .table {
+    color: var(--text-color);
+}
+
+.dark-mode .table th {
+    border-color: var(--border-color);
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.dark-mode .table td {
+    border-color: var(--border-color);
+}
+
+.dark-mode .table tbody tr:hover {
+    background-color: var(--table-row-hover);
+}
+
+/* Ensure text is always visible */
+.dark-mode .empty-table {
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.dark-mode .status-not-started,
+.dark-mode .status-in-progress,
+.dark-mode .status-done {
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.dark-mode .status-not-started {
+    background-color: var(--secondary-color);
+}
+
+.dark-mode .status-in-progress {
+    background-color: var(--warning-color);
+}
+
+.dark-mode .status-done {
+    background-color: var(--success-color);
+}
+
+/* Improve contrast for labels and inputs */
+.dark-mode label {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+    background-color: var(--input-bg);
+    color: white;
+    border: 1px solid var(--border-color);
+}
+
+.dark-mode .nav-tabs {
+    border-color: var(--border-color);
+}
+
+.dark-mode .nav-tabs .nav-link.active {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.dark-mode .nav-tabs .nav-link:not(.active) {
+    color: var(--text-color);
+}
+
+.dark-mode .nav-tabs .nav-link:hover {
+    border-color: var(--border-color);
+}
+
+.dark-mode .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+.dark-mode .border-bottom {
+    border-color: var(--border-color) !important;
+}
+
+.dark-mode hr {
+    border-color: var(--border-color);
+}
+
+/* Tooltip Styles */
+.tooltip-content {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+    font-size: 0.85rem;
+}
+
+.tooltip-content::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+.tooltip-content.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+[data-tooltip] {
+    position: relative;
+}
+
+.dark-mode .tooltip-content {
+    background-color: #555;
+}
+
+.dark-mode .tooltip-content::after {
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Dark Mode Toggle */
+#dark-mode-toggle {
+    cursor: pointer;
+    margin-right: 15px;
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+#dark-mode-toggle:hover {
+    background-color: var(--nav-hover);
+}
+
+/* Form Error Styles */
+.error {
+    border-color: var(--danger-color) !important;
+}
+
+.field-error {
+    color: var(--danger-color);
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
